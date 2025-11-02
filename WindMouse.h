@@ -131,7 +131,7 @@ wind_mouse_relative_move( //returns iterations count for example
 	short wind_x = 0;
 	short wind_y = 0;
 
-	unsigned short total_distance = fast_hypot(delta_x, delta_y);
+	unsigned short total_distance = static_cast<unsigned short>(fast_hypot(delta_x, delta_y));
 	unsigned short distance_to_target = total_distance;
 
 	while (true) {
@@ -154,20 +154,20 @@ wind_mouse_relative_move( //returns iterations count for example
 			velocity_y += wind_y + gravity_strength * scaleFactor * (delta_y - current_y) / distance_to_target;
 
 			// Cap velocity at maximum
-			unsigned short velocity_magnitude = fast_hypot(velocity_x, velocity_y);
+			unsigned short velocity_magnitude = static_cast<unsigned short>(fast_hypot(velocity_x, velocity_y));
 			if (velocity_magnitude > max_step_size * scaleFactor) {
 				velocity_x = velocity_x / velocity_magnitude * max_step_size;
 				velocity_y = velocity_y / velocity_magnitude * max_step_size;
 			}
 
 			// Calculate movement for this step
-			short step_x = velocity_x / scaleFactor;
-			short step_y = velocity_y / scaleFactor;
+			short step_x = static_cast<short>(velocity_x / scaleFactor);
+			short step_y = static_cast<short>(velocity_y / scaleFactor);
 			current_x += step_x;
 			current_y += step_y;
 
 			// Calculate timing for this step
-			unsigned short step_distance = fast_hypot(step_x, step_y);
+			unsigned short step_distance = static_cast<unsigned short>(fast_hypot(step_x, step_y));
 			unsigned int sleep_duration = duration_microsecond_remained * step_distance / distance_to_target;
 			duration_microsecond_remained -= sleep_duration;
 
@@ -177,18 +177,15 @@ wind_mouse_relative_move( //returns iterations count for example
 			prev_y = current_y;
 
 			// New distance to target
-			distance_to_target = fast_hypot(delta_x - current_x, delta_y - current_y);
+			distance_to_target = static_cast<unsigned short>(fast_hypot(delta_x - current_x, delta_y - current_y));
 		}
 		else {
 			// Final movement directly to target
 			interpolateMouseMovements(delta_x - prev_x, delta_y - prev_y, duration_microsecond_remained, moveCallback, sleepCallback);
 			break;
 		}
-
-
 	}
 #ifdef WindMouseDebug
 	return iteration_count;
 #endif
 }
-
