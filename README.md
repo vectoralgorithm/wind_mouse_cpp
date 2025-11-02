@@ -42,15 +42,14 @@ char fast_rand() {
 	return fast_rand_unsigned() - scaleFactor;
 }
 
-
-int fast_hypot(int x, int y) {
-	int dx = (x < 0) ? -x : x;
-	int dy = (y < 0) ? -y : y;
-	int max_val = (dx > dy) ? dx : dy;
-	int min_val = (dx > dy) ? dy : dx;
+template<typename T>
+auto fast_hypot(T x, T y) {
+	auto dx = (x < 0) ? -x : x;
+	auto dy = (y < 0) ? -y : y;
+	auto max_val = (dx > dy) ? dx : dy;
+	auto min_val = (dx > dy) ? dy : dx;
 	return (15 * max_val + 7 * min_val) >> 4;
 }
-
 
 int wind_mouse_relative_move( //returns iterations count for example
 	short delta_x, short delta_y,
