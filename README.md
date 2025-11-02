@@ -17,7 +17,7 @@ It uses a custom integer math model driven by simulated *gravity* and *wind forc
 - ⚡ **Fast pseudo-random generator** using `xorshift32`
 - 🌱 **Random seed generated at build time**
 - 🧮 **No floating-point math** — fully integer-based calculations
-- 🧲 **no dependencies, no std dependencies** - just a Windmouse.h
+- 🧲 **No dependencies, no std dependencies** - just a Windmouse.h
 - 🎯 **Smooth, human-like motion** via simulated gravity & wind
 - 🧠 **Deterministic randomness** (perfect reproducibility)
 - ⚙️ **Adjustable parameters:**
