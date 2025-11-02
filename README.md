@@ -54,9 +54,9 @@ auto fast_hypot(T x, T y) {
 int wind_mouse_relative_move( //returns iterations count for example
 	short delta_x, short delta_y,
 	unsigned char gravity_strength = 10,
-	unsigned char max_wind_magnitude = 1,
-	unsigned char max_step_size = 32,
-	unsigned int duration_microsecond = 1000 * 1000
+	unsigned char max_wind_magnitude = 2,
+	unsigned char max_step_size = 320,
+	unsigned int duration_microsecond_remained = 1000 * 1000
 )
 {
 	// gravity_strength      = Gravity constant       Pull toward goal
@@ -76,8 +76,8 @@ int wind_mouse_relative_move( //returns iterations count for example
 
 	int velocity_x = 0;
 	int velocity_y = 0;
-	int wind_x = 0;
-	int wind_y = 0;
+	short wind_x = 0;
+	short wind_y = 0;
 
 	unsigned short total_distance = fast_hypot(delta_x, delta_y);
 	unsigned short distance_to_target = total_distance;
@@ -87,7 +87,7 @@ int wind_mouse_relative_move( //returns iterations count for example
 
 		if (distance_to_target > max_step_size) {
 			// Apply wind (random jitter)
-			int wind_magnitude = (max_wind_magnitude < distance_to_target)
+			unsigned short wind_magnitude = (max_wind_magnitude < distance_to_target)
 				? max_wind_magnitude
 				: distance_to_target;
 
@@ -112,9 +112,9 @@ int wind_mouse_relative_move( //returns iterations count for example
 			current_y += step_y;
 
 			// Calculate timing for this step
-			int step_distance = fast_hypot(step_x, step_y);
-			int sleep_duration = duration_microsecond * step_distance / distance_to_target;
-			duration_microsecond -= sleep_duration;
+			unsigned short step_distance = fast_hypot(step_x, step_y);
+			unsigned int sleep_duration = duration_microsecond_remained * step_distance / distance_to_target;
+			duration_microsecond_remained -= sleep_duration;
 
 			// Execute movement
 			drawdot_mouse_move_relative(current_x - prev_x, current_y - prev_y);
@@ -128,7 +128,7 @@ int wind_mouse_relative_move( //returns iterations count for example
 		else {
 			// Final movement directly to target
 			drawdot_mouse_move_relative(delta_x - prev_x, delta_y - prev_y);
-			SleepMicroseconds(duration_microsecond);
+			SleepMicroseconds(duration_microsecond_remained);
 			break;
 		}
 
