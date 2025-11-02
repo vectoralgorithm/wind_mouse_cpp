@@ -6,7 +6,8 @@ It uses deterministic pseudo-randomness (`xorshift32`) instead of rand() for per
 ---
 
 ## ✨ Features
-
+- single header file
+- random seed during build time
 - **Fast pseudo-random generator** using `xorshift32`
 - **Custom integer-based hypot approximation** for performance
 - **Smooth, human-like motion** driven by simulated gravity and wind
@@ -20,7 +21,7 @@ It uses deterministic pseudo-randomness (`xorshift32`) instead of rand() for per
 
 ---
 
-## 🧩 Code
+## 🧩 Code without complexity [UPDATED VERSION IN WindMouse.h]
 
 ```cpp
 #define scaleFactor 128
