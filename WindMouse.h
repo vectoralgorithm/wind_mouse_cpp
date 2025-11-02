@@ -1,5 +1,5 @@
 #pragma once
-#define WindMouseDebug
+// #define WindMouseDebug
 
 constexpr uint32_t fnv1a_32(const char* str, uint32_t hash = 2166136261u) {
 	return *str ? fnv1a_32(str + 1, (hash ^ static_cast<uint32_t>(*str)) * 16777619u) : hash;
@@ -191,4 +191,5 @@ wind_mouse_relative_move( //returns iterations count for example
 #ifdef WindMouseDebug
 	return iteration_count;
 #endif
+
 }
