@@ -172,7 +172,6 @@ wind_mouse_relative_move( //returns iterations count for example
 			duration_microsecond_remained -= sleep_duration;
 
 			// Execute movement
-			//callback(current_x - prev_x, current_y - prev_y, sleep_duration);
 			interpolateMouseMovements(current_x - prev_x, current_y - prev_y, sleep_duration, moveCallback, sleepCallback);
 			prev_x = current_x;
 			prev_y = current_y;
@@ -192,3 +191,4 @@ wind_mouse_relative_move( //returns iterations count for example
 	return iteration_count;
 #endif
 }
+
