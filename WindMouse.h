@@ -1,10 +1,10 @@
 #pragma once
-// #define WindMouseDebug
+//#define WindMouseDebug
 
-constexpr uint32_t fnv1a_32(const char* str, uint32_t hash = 2166136261u) {
-	return *str ? fnv1a_32(str + 1, (hash ^ static_cast<uint32_t>(*str)) * 16777619u) : hash;
+constexpr unsigned int fnv1a_32(const char* str, unsigned int hash = 2166136261u) {
+	return *str ? fnv1a_32(str + 1, (hash ^ static_cast<unsigned int>(*str)) * 16777619u) : hash;
 }
-constexpr uint32_t compile_time_seed() {
+constexpr unsigned int compile_time_seed() {
 	return fnv1a_32(__DATE__) ^ fnv1a_32(__TIME__);
 }
 
@@ -102,7 +102,7 @@ wind_mouse_relative_move( //returns iterations count for example
 	short delta_x, short delta_y,
 	MoveCallback moveCallback,
 	SleepCallback sleepCallback,
-	unsigned int duration_microsecond_remained,
+	unsigned int duration_microsecond_remained = 1000 * 1000,
 	unsigned char gravity_strength = 10,
 	unsigned char max_wind_magnitude = 2,
 	unsigned char max_step_size = 32
@@ -191,6 +191,4 @@ wind_mouse_relative_move( //returns iterations count for example
 #ifdef WindMouseDebug
 	return iteration_count;
 #endif
-
 }
-
