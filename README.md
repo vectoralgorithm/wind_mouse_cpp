@@ -99,7 +99,7 @@ int wind_mouse_relative_move( //returns iterations count for example
 			velocity_y += wind_y + gravity_strength * scaleFactor * (delta_y - current_y) / distance_to_target;
 
 			// Cap velocity at maximum
-			short velocity_magnitude = fast_hypot(velocity_x, velocity_y);
+			unsigned short velocity_magnitude = fast_hypot(velocity_x, velocity_y);
 			if (velocity_magnitude > max_step_size * scaleFactor) {
 				velocity_x = velocity_x / velocity_magnitude * max_step_size;
 				velocity_y = velocity_y / velocity_magnitude * max_step_size;
