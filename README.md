@@ -1,7 +1,8 @@
 # 🌀 Wind Mouse Relative Movement Simulation
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/vectoralgorithm/wind_mouse_cpp/main/Untitled.png" alt="Wind Mouse Simulation Demo" width="600">
+  <img src="https://raw.githubusercontent.com/vectoralgorithm/wind_mouse_cpp/main/Untitled.png" alt="Wind Mouse Simulation Demo" width="400">
+  <img src="https://raw.githubusercontent.com/vectoralgorithm/wind_mouse_cpp/main/Demo.png" alt="Wind Mouse Demo" width="400">
 </p>
 
 A lightweight, **deterministic, human-like mouse movement generator** based on the ["WindMouse" algorithm](https://ben.land/post/2021/04/25/windmouse-human-mouse-movement/).
