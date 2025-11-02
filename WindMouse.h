@@ -102,7 +102,7 @@ wind_mouse_relative_move( //returns iterations count for example
 	short delta_x, short delta_y,
 	MoveCallback moveCallback,
 	SleepCallback sleepCallback,
-	unsigned int duration_microsecond_remained = 1000 * 1000,
+	unsigned int duration_microsecond_remained,
 	unsigned char gravity_strength = 10,
 	unsigned char max_wind_magnitude = 2,
 	unsigned char max_step_size = 32
@@ -193,3 +193,4 @@ wind_mouse_relative_move( //returns iterations count for example
 #endif
 
 }
+
