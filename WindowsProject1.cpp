@@ -2,6 +2,8 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <type_traits>
+#include <chrono>
+#include <thread>
 #include "WindMouse.h"
 
 HDC g_hdc = nullptr;
@@ -64,31 +66,92 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
 
 
-		auto sleepCallback = [](unsigned int sleep_us) {
-			SleepMicroseconds(sleep_us);
-			};
 		auto moveCallback = [](short dx, short dy) {
 			DrawDotRelative(dx, dy);
 			};
 
-		//WindMouse and Linear Interpolation
+		auto sleepCallbackPercise = [](unsigned int sleep_us) {
+			SleepMicroseconds(sleep_us);
+			};
+		auto sleepCallbackChrono = [](unsigned int sleep_us) {
+			std::this_thread::sleep_for(std::chrono::microseconds(sleep_us));
+			};
+		auto sleepCallbackImperfect = [](unsigned int sleep_us) {
+			Sleep(sleep_us / 1000);
+			};
+
+		auto getCurrentTimeChrono = []() -> unsigned int {
+			return std::chrono::duration_cast<std::chrono::microseconds>(
+				std::chrono::steady_clock::now().time_since_epoch()
+			).count();
+			};
+		auto getCurrentTimeImpefect = []() -> unsigned int {
+			// GetTickCount64() = milliseconds
+			return GetTickCount64() * 1000; //microseconds
+			};
+
+
+		//// Interpolation with perfect sleep
+		//for (int i = 0; i < 10; ++i) {
+		//	g_mouseX = 0;
+		//	g_mouseY = 50 + i * 50;
+		//	MeasureTime([&]() {
+		//		return interpolateMouseMovePerfect(800, 0, 1000 * 1000, moveCallback, sleepCallbackPercise);
+		//		});
+		//}
+
+		//// Interpolation with Chrono sleep
+		//for (int i = 0; i < 10; ++i) {
+		//	g_mouseX = 0;
+		//	g_mouseY = 50 + i * 50;
+		//	MeasureTime([&]() {
+		//		return interpolateMouseMoveImperfect(800, 0, 1000 * 1000, moveCallback, sleepCallbackChrono, getCurrentTimeChrono);
+		//		});
+		//}
+
+		//// Interpolation with imperfect sleep
+		//for (int i = 0; i < 10; ++i) {
+		//	g_mouseX = 0;
+		//	g_mouseY = 50 + i * 50;
+		//	MeasureTime([&]() {
+		//		return interpolateMouseMoveImperfect(800, 0, 1000 * 1000, moveCallback, sleepCallbackImperfect, getCurrentTimeImpefect);
+		//		});
+		//}
+
+
+		//WindMouse and Linear Interpolation with perfect sleep
+		//Interpolates with delta of 1, extremely smooth, requires extremely percise sleep
 		for (int i = 0; i < 10; ++i) {
 			g_mouseX = 0;
 			g_mouseY = 50 + i * 50;
 			MeasureTime([&]() {
-				return wind_mouse_relative_move(800, 0, moveCallback, sleepCallback, 1000 * 1000, 10, 2, 32);
+				return wind_mouse_perfect(800, 0, 1000 * 1000, moveCallback, sleepCallbackPercise);
 				});
 		}
-		/*
-		//Linear interpolation only
-		for (int i = 0; i < 10; ++i) {
-			g_mouseX = 0;
-			g_mouseY = 50 + i * 50;
-			MeasureTime([&]() {
-				return interpolateMouseMovements(800, 0, 1000 * 1000, moveCallback, sleepCallback);
-				});
-		}
-		*/
+
+		////WindMouse and Linear Interpolation with chrono sleep
+		////!!!If sleep is imperfect it means we can't interpolate with 1 delta step, we need greater step to mach percision of sleep and timer
+		//for (int i = 0; i < 10; ++i) {
+		//	g_mouseX = 0;
+		//	g_mouseY = 50 + i * 50;
+		//	MeasureTime([&]() {
+		//		return wind_mouse_imperfect(800, 0, 1000 * 1000, moveCallback, sleepCallbackChrono, getCurrentTimeChrono, 10, 2, 32);
+		//		});
+		//}
+
+
+		////!!!WORST!!! MOST IMPERFECT SLEEP AND TIMER SCENARIO - comment this and uncomment better scenarios
+		////!!!If sleep is imperfect it means we can't interpolate with 1 delta step, we need greater step to mach percision of sleep and timer
+		////WindMouse and Linear Interpolation with imperfect sleep
+		//for (int i = 0; i < 10; ++i) {
+		//	g_mouseX = 0;
+		//	g_mouseY = 50 + i * 50;
+		//	MeasureTime([&]() {
+		//		return wind_mouse_imperfect(800, 0, 1000 * 1000, moveCallback, sleepCallbackImperfect, getCurrentTimeImpefect, 10, 2, 32);
+		//		});
+		//}
+
+
 		
 
 		EndPaint(hwnd, &ps);
@@ -112,10 +175,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow) {
 	FILE* fp;
 	freopen_s(&fp, "CONOUT$", "w", stdout);
 
-	WNDCLASSW wc = { 0 };  
+	WNDCLASSW wc = { 0 };
 	wc.lpfnWndProc = WndProc;
 	wc.hInstance = hInstance;
-	wc.lpszClassName = L"DrawApp";  
+	wc.lpszClassName = L"DrawApp";
 	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
 	RegisterClassW(&wc);
 
